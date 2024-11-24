@@ -18,7 +18,7 @@ velocity = "3.3.0-SNAPSHOT"
 guice = "7.0.0"
 configurate = "4.2.0-YAML-COMMENTED-SNAPSHOT"
 scoreboard = "2.0.1"
-shadowJar = "8.1.1"
+shadowJar = "8.3.5"
 pluginYml = "0.6.0"
 ebean = "15.1.0"
 nookcore = "1.0.0-4a979a3"
@@ -78,7 +78,7 @@ scoreboard = ["scoreboard", "scoreboard-implementation", "scoreboard-modern", "s
 nookcore = ["nookure-core-commands", "nookure-core-core", "nookure-core-config", "nookure-core-logger", "nookure-core-player"]
 
 [plugins]
-shadowJar = { id = "com.github.johnrengelman.shadow", version.ref = "shadowJar" }
+shadowJar = { id = "com.gradleup.shadow", version.ref = "shadowJar" }
 pluginYmlBukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "pluginYml" }
 pluginYmlBungee = { id = "net.minecrell.plugin-yml.bungeecord", version.ref = "pluginYml" }
 pluginYmlPaper = { id = "net.minecrell.plugin-yml.paper", version.ref = "pluginYml" }
