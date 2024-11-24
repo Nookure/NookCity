@@ -42,6 +42,10 @@ allprojects {
       options.encoding = "UTF-8"
     }
   }
+
+  java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+  }
 }
 
 tasks.shadowJar {
@@ -64,9 +68,11 @@ tasks {
 
 tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
   javaLauncher = javaToolchains.launcherFor {
+
     vendor = JvmVendorSpec.JETBRAINS
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
+
   jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
   systemProperties["nookcity.debug"] = "true"
 }
