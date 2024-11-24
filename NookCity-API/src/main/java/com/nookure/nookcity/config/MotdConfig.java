@@ -76,10 +76,10 @@ public class MotdConfig {
 
     @Setting
     @Comment("If sets to 0, it will be ignored.")
-    public final int protocol;
+    public int protocol;
 
     @Setting
     @Comment("If sets to null, it will be ignored.")
-    public final String friendlyName;
+    public String friendlyName;
   }
 }

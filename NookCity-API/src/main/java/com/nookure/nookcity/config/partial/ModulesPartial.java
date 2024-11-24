@@ -10,17 +10,17 @@ public class ModulesPartial {
   @Comment("""
       Enable or disable the MOTD module.
       """)
-  public final boolean motd = true;
+  public boolean motd = true;
 
   @Setting
   @Comment("""
       Enable or disable the lobby module.
       """)
-  public final boolean lobby = true;
+  public boolean lobby = true;
 
   @Setting
   @Comment("""
       Enable or disable the server kick redirect module.
       """)
-  public final boolean serverKickRedirect = true;
+  public boolean serverKickRedirect = true;
 }

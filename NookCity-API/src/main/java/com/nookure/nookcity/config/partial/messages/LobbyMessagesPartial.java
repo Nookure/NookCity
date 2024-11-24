@@ -4,7 +4,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public class LobbyMessagesPartial {
-  public final String errorWhileConnecting = """
+  public String errorWhileConnecting = """
       {center}<red><b>◆ ERROR ◆</b>
       
       {center}<gray>There was an error while connecting to the server.

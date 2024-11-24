@@ -6,9 +6,9 @@ import java.util.List;
 
 @ConfigSerializable
 public class ServerKickPartial {
-  public final boolean checkReason = true;
+  public boolean checkReason = true;
 
-  public final List<String> reasons = List.of(
+  public List<String> reasons = List.of(
       "Server closed",
       "Restarting",
       "Unknown"

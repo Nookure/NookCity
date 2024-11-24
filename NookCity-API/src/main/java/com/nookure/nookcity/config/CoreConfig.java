@@ -7,7 +7,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public class CoreConfig {
-  public final ModulesPartial modules = new ModulesPartial();
-  public final LobbyPartial lobby = new LobbyPartial();
-  public final ServerKickPartial serverKick = new ServerKickPartial();
+  public ModulesPartial modules = new ModulesPartial();
+  public LobbyPartial lobby = new LobbyPartial();
+  public ServerKickPartial serverKick = new ServerKickPartial();
 }

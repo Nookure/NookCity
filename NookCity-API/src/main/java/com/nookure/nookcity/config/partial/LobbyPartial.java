@@ -12,5 +12,5 @@ public class LobbyPartial {
   @Comment("""
       Configure the lobby servers that will be used to connect players.
       """)
-  public final List<String> lobbyServers = List.of("lobby1", "lobby2", "lobby3");
+  public List<String> lobbyServers = List.of("lobby1", "lobby2", "lobby3");
 }
