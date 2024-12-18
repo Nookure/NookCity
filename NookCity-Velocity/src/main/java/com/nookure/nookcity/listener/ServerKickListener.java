@@ -1,5 +1,7 @@
 package com.nookure.nookcity.listener;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.inject.Inject;
 import com.nookure.core.config.ConfigurationContainer;
 import com.nookure.core.manager.PlayerWrapperManager;
@@ -13,6 +15,11 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class ServerKickListener {
   @Inject
@@ -24,6 +31,10 @@ public class ServerKickListener {
   @Inject
   private ConfigurationContainer<Messages> messages;
 
+  private final Cache<UUID, String> triedToConnect = Caffeine.newBuilder()
+      .expireAfterWrite(5, TimeUnit.SECONDS)
+      .build();
+
   @Subscribe
   public void onServerKick(KickedFromServerEvent event) {
     ProxyPlayerWrapper player = (ProxyPlayerWrapper) manager.getPlayerWrapper(event.getPlayer().getUniqueId()).orElse(null);
@@ -33,7 +44,7 @@ public class ServerKickListener {
     }
 
     if (!config.get().serverKick.checkReason) {
-      event.setResult(redirectToLobbyOrKick());
+      event.setResult(redirectToLobbyOrKick(event.getPlayer()));
       return;
     }
 
@@ -46,20 +57,23 @@ public class ServerKickListener {
     }
 
     if (config.get().serverKick.reasons.contains(reason)) {
-      event.setResult(redirectToLobbyOrKick());
+      event.setResult(redirectToLobbyOrKick(event.getPlayer()));
       return;
     }
 
     event.setResult(KickedFromServerEvent.DisconnectPlayer.create(event.getServerKickReason().orElse(null)));
   }
 
-  private KickedFromServerEvent.ServerKickResult redirectToLobbyOrKick() {
+  private KickedFromServerEvent.ServerKickResult redirectToLobbyOrKick(@NotNull Player player) {
     RegisteredServer server = serverStatusManager.getServerWithLessPlayers();
-    if (server == null) {
+
+    if (server == null || Objects.equals(triedToConnect.getIfPresent(player.getUniqueId()), server.getServerInfo().getName())) {
       return KickedFromServerEvent.DisconnectPlayer
           .create(MiniMessage.miniMessage().deserialize(messages.get().lobby.errorWhileConnecting));
     } else {
+      triedToConnect.put(player.getUniqueId(), server.getServerInfo().getName());
       return KickedFromServerEvent.RedirectPlayer.create(server);
     }
   }
 }
+
