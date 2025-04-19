@@ -31,6 +31,11 @@ public class PlayerWrapperListener {
   public void onPlayerLeave(DisconnectEvent event) {
     Player player = event.getPlayer();
 
+    if (wrapper.getPlayerWrapper(player).isEmpty()) {
+      logger.debug("PlayerWrapper not found for player: " + player.getUsername());
+      return;
+    }
+
     wrapper.removePlayerWrapper(player);
     logger.debug("PlayerWrapper removed for player: " + player.getUsername());
   }
