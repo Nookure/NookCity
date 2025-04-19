@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.nookure.core.config.ConfigurationContainer;
 import com.nookure.nookcity.cmd.LobbyCommand;
+import com.nookure.nookcity.cmd.NookCityCommand;
 import com.nookure.nookcity.cmd.core.VelocityCommandManager;
 import com.nookure.nookcity.config.CoreConfig;
 import com.nookure.nookcity.listener.PlayerWrapperListener;
@@ -72,6 +73,8 @@ public class NookCity {
     if (coreConfig.get().modules.lobby) {
       commandManager.registerCommand(LobbyCommand.class);
     }
+
+    commandManager.registerCommand(NookCityCommand.class);
   }
 
   public void loadListeners() {
