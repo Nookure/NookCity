@@ -1,16 +1,11 @@
 package com.nookure.nookcity.config.partial;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-
 import java.util.List;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public class ServerKickPartial {
-  public boolean checkReason = true;
+    public boolean checkReason = true;
 
-  public List<String> reasons = List.of(
-      "Server closed",
-      "Restarting",
-      "Unknown"
-  );
+    public List<String> reasons = List.of("Server closed", "Restarting", "Unknown");
 }
