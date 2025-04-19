@@ -28,6 +28,8 @@ subprojects {
 }
 
 allprojects {
+    apply (plugin = "com.diffplug.spotless")
+
     repositories {
         mavenCentral()
         maven("https://maven.nookure.com")
@@ -47,6 +49,29 @@ allprojects {
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(21))
     }
+
+    spotless {
+        //ratchetFrom("origin/main") // Uncomment in case of working in a feature branch (makes changes only to files on that branch)
+
+        format("misc") {
+            target(
+                "*.gradle.kts",
+                ".gitattributes",
+                ".gitignore"
+            )
+
+            trimTrailingWhitespace()
+            indentWithSpaces(2)
+            endWithNewline()
+        }
+
+        java {
+            googleJavaFormat("1.26.0").aosp().reflowLongStrings().skipJavadocFormatting()
+            formatAnnotations()
+            removeUnusedImports()
+        }
+    }
+
 }
 
 tasks.shadowJar {
@@ -76,26 +101,4 @@ tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
 
     jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
     systemProperties["nookcity.debug"] = "true"
-}
-
-spotless {
-    //ratchetFrom("origin/main") // Uncomment in case of working in a feature branch (makes changes only to files on that branch)
-
-    format("misc") {
-        target(
-            "*.gradle.kts",
-            ".gitattributes",
-            ".gitignore"
-        )
-
-        trimTrailingWhitespace()
-        indentWithSpaces(2)
-        endWithNewline()
-    }
-
-    java {
-        googleJavaFormat("1.26.0").aosp().reflowLongStrings().skipJavadocFormatting()
-        formatAnnotations()
-        removeUnusedImports()
-    }
 }
