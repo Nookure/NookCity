@@ -8,30 +8,32 @@ import com.nookure.core.config.ConfigurationContainer;
 import com.nookure.nookcity.config.CoreConfig;
 import com.nookure.nookcity.config.Messages;
 import com.nookure.nookcity.config.MotdConfig;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 @CommandData(
         name = "nookcity",
         permission = "nookcity.admin",
         description = "Main command of the NookCity plugin",
-        aliases = {"nc"}
-)
+        aliases = {"nc"})
 public class NookCityCommand extends Command {
     private final ConfigurationContainer<CoreConfig> coreConfig;
     private final ConfigurationContainer<Messages> messages;
     private final ConfigurationContainer<MotdConfig> motdConfig;
 
     @Inject
-    public NookCityCommand(ConfigurationContainer<CoreConfig> coreConfig, ConfigurationContainer<Messages> messages, ConfigurationContainer<MotdConfig> motdConfig) {
+    public NookCityCommand(
+            ConfigurationContainer<CoreConfig> coreConfig,
+            ConfigurationContainer<Messages> messages,
+            ConfigurationContainer<MotdConfig> motdConfig) {
         this.coreConfig = coreConfig;
         this.messages = messages;
         this.motdConfig = motdConfig;
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender commandSender, @NotNull String s, @NotNull List<String> list) {
+    public void onCommand(
+            @NotNull CommandSender commandSender, @NotNull String s, @NotNull List<String> list) {
         if (list.isEmpty()) {
             commandSender.sendMiniMessage(String.join("\n", messages.get().commands.help));
             return;
