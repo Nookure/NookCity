@@ -1,7 +1,10 @@
 package com.nookure.nookcity.config.partial.messages;
 
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+
 import java.util.List;
 
+@ConfigSerializable
 public class CommandMessagesPartial {
     public List<String> help =
             List.of(
