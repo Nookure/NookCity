@@ -12,31 +12,28 @@ import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.proxy.Player;
 
 public class PlayerWrapperListener {
-  @Inject
-  private PlayerWrapperManager<Player, ProxyPlayerWrapper> wrapper;
-  @Inject
-  private Injector injector;
-  @Inject
-  private Logger logger;
+    @Inject private PlayerWrapperManager<Player, ProxyPlayerWrapper> wrapper;
+    @Inject private Injector injector;
+    @Inject private Logger logger;
 
-  @Subscribe
-  public void onPlayerJoin(PostLoginEvent event) {
-    Player player = event.getPlayer();
+    @Subscribe
+    public void onPlayerJoin(PostLoginEvent event) {
+        Player player = event.getPlayer();
 
-    wrapper.addPlayerWrapper(player, new VelocityProxyPlayerWrapper(player, injector));
-    logger.debug("PlayerWrapper added for player: " + player.getUsername());
-  }
-
-  @Subscribe
-  public void onPlayerLeave(DisconnectEvent event) {
-    Player player = event.getPlayer();
-
-    if (wrapper.getPlayerWrapper(player).isEmpty()) {
-      logger.debug("PlayerWrapper not found for player: " + player.getUsername());
-      return;
+        wrapper.addPlayerWrapper(player, new VelocityProxyPlayerWrapper(player, injector));
+        logger.debug("PlayerWrapper added for player: " + player.getUsername());
     }
 
-    wrapper.removePlayerWrapper(player);
-    logger.debug("PlayerWrapper removed for player: " + player.getUsername());
-  }
+    @Subscribe
+    public void onPlayerLeave(DisconnectEvent event) {
+        Player player = event.getPlayer();
+
+        if (wrapper.getPlayerWrapper(player).isEmpty()) {
+            logger.debug("PlayerWrapper not found for player: " + player.getUsername());
+            return;
+        }
+
+        wrapper.removePlayerWrapper(player);
+        logger.debug("PlayerWrapper removed for player: " + player.getUsername());
+    }
 }
