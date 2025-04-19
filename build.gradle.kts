@@ -61,7 +61,6 @@ allprojects {
             )
 
             trimTrailingWhitespace()
-            indentWithSpaces(2)
             endWithNewline()
         }
 
