@@ -7,9 +7,7 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 @ConfigSerializable
 public class Messages {
-  @Setting
-  public LobbyMessagesPartial lobby = new LobbyMessagesPartial();
+    @Setting public LobbyMessagesPartial lobby = new LobbyMessagesPartial();
 
-    @Setting
-    public CommandMessagesPartial commands = new CommandMessagesPartial();
+    @Setting public CommandMessagesPartial commands = new CommandMessagesPartial();
 }
