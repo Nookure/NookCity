@@ -10,7 +10,7 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.InboundConnection;
 import com.velocitypowered.api.proxy.server.ServerPing;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
@@ -57,22 +57,29 @@ public class ServerPingListener {
         return builder.build();
     }
 
-    public MotdConfig.MotdPartial getRandomMotd(@NotNull InboundConnection connection) {
-        List<MotdConfig.MotdPartial> motds = motdConfig.get().motds;
+    public MotdConfig.MotdPartial getRandomMotd(@NotNull final InboundConnection connection) {
+        if (motdConfig.get().motds.isEmpty()) return null;
 
-        if (motds.isEmpty()) return null;
+        return getRandomMotd(connection, new ArrayList<>(motdConfig.get().motds));
+    }
 
-        MotdConfig.MotdPartial motdPartial = motds.get(RANDOM.nextInt(motds.size()));
+    public MotdConfig.MotdPartial getRandomMotd(
+            @NotNull final InboundConnection connection,
+            ArrayList<MotdConfig.MotdPartial> partials) {
+        if (partials.isEmpty()) return motdConfig.get().motds.getFirst();
+        MotdConfig.MotdPartial motdPartial = partials.get(RANDOM.nextInt(partials.size()));
 
         if (canUseMotd(motdPartial, connection)) {
             return motdPartial;
         } else {
-            return getRandomMotd(connection);
+            partials.remove(motdPartial);
+            return getRandomMotd(connection, partials);
         }
     }
 
     public boolean canUseMotd(
-            @NotNull MotdConfig.MotdPartial motdPartial, @NotNull InboundConnection connection) {
+            @NotNull final MotdConfig.MotdPartial motdPartial,
+            @NotNull final InboundConnection connection) {
         int protocolVersion = connection.getProtocolVersion().getProtocol();
 
         if (protocolVersion == -1) {
