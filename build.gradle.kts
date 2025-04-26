@@ -83,10 +83,10 @@ tasks.test {
 
 tasks {
     runVelocity {
-        velocityVersion("3.3.0-SNAPSHOT")
+        velocityVersion("3.4.0-SNAPSHOT")
 
         downloadPlugins {
-            url("https://download.luckperms.net/1549/velocity/LuckPerms-Velocity-5.4.134.jar")
+            url("https://download.luckperms.net/1575/velocity/LuckPerms-Velocity-5.4.158.jar")
         }
     }
 }
