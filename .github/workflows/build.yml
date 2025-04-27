@@ -1,6 +1,6 @@
 # This workflow will build a Java project
 
-name: NookCity build
+name: Nookure Proxy Utils build
 
 on:
   push:
@@ -32,5 +32,5 @@ jobs:
       - name: Upload the jar
         uses: actions/upload-artifact@v4
         with:
-          name: NookCity
+          name: Nookure Proxy Utils
           path: staging

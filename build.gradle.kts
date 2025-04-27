@@ -12,8 +12,8 @@ version = versionCode
 group = "com.nookure.nookcity"
 
 dependencies {
-    implementation(project(":NookCity-API"))
-    implementation(project(":NookCity-Velocity"))
+    implementation(project(":api"))
+    implementation(project(":plugin"))
     implementation(libs.bundles.nookcore)
 }
 
@@ -93,11 +93,10 @@ tasks {
 
 tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
     javaLauncher = javaToolchains.launcherFor {
-
         vendor = JvmVendorSpec.JETBRAINS
         languageVersion = JavaLanguageVersion.of(21)
     }
 
     jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
-    systemProperties["nookcity.debug"] = "true"
+    systemProperties["npu.debug"] = "true"
 }

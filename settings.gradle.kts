@@ -1,6 +1,6 @@
-rootProject.name = "NookCity"
-include("NookCity-API")
-include("NookCity-Velocity")
+rootProject.name = "nookure-proxy-utils"
+include("api")
+include("plugin")
 
 pluginManagement {
   repositories {
