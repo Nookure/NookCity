@@ -86,7 +86,7 @@ public class VelocityProxyPlayerWrapper implements ProxyPlayerWrapper {
 
     @Override
     public void goToLobby() {
-        RegisteredServer lobby = serverStatusManager.getServerWithLessPlayers();
+        final RegisteredServer lobby = serverStatusManager.getServerWithLessPlayers();
         if (lobby == null) {
             sendMiniMessage(DefaultFontInfo.center(messages.get().lobby.errorWhileConnecting));
         } else {
