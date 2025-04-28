@@ -41,7 +41,7 @@ public class ServerPingListener {
             return;
         }
 
-        MotdConfig.MotdPartial partial = getRandomMotd(event.getConnection());
+        MotdConfig.MotdPartial partial = getRandomMotd(event.getConnection(), new ArrayList<>(motdConfig.get().motds));
 
         if (partial == null) return;
 
@@ -62,11 +62,6 @@ public class ServerPingListener {
         return builder.build();
     }
 
-    public MotdConfig.MotdPartial getRandomMotd(@NotNull final InboundConnection connection) {
-        final MotdConfig config = motdConfig.get();
-        return config.motds.isEmpty() ? null : getRandomMotd(connection, new ArrayList<>(config.motds));
-    }
-
     public MotdConfig.MotdPartial getRandomMotd(
             @NotNull final InboundConnection connection,
             List<MotdConfig.MotdPartial> partials) {
@@ -83,10 +78,11 @@ public class ServerPingListener {
         return getRandomMotd(connection, partials);
     }
 
+    @SuppressWarnings("unchecked")
     public boolean canUseMotd(
             @NotNull final MotdConfig.MotdPartial motdPartial,
             @NotNull final InboundConnection connection) {
-        int protocolVersion = connection.getProtocolVersion().getProtocol();
+        final int protocolVersion = connection.getProtocolVersion().getProtocol();
         if (protocolVersion == -1 || motdPartial.condition == null || motdPartial.condition.isEmpty()) {
             return true;
         }
