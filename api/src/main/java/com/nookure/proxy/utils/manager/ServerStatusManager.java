@@ -41,6 +41,7 @@ public final class ServerStatusManager {
             }
             RegisteredServer server = entry.getKey();
             if (lessPlayersServer != null && lessPlayersServer.getPlayersConnected().size() < server.getPlayersConnected().size()) {
+                // by now, this server keeps being the one with the lowest players amount.
                 continue;
             }
             if (server.getPlayersConnected().size() < Integer.MAX_VALUE) {
