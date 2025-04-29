@@ -6,6 +6,8 @@ import com.nookure.core.logger.Logger;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import java.util.*;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Singleton
@@ -53,13 +55,13 @@ public final class ServerStatusManager {
         return lessPlayersServer;
     }
 
-    public List<RegisteredServer> getOnlineServers() {
-        final List<RegisteredServer> onlineServers = new ArrayList<>(serverStatus.size());
+    public @NotNull RegisteredServer @NotNull [] getOnlineServers() {
+        final RegisteredServer[] onlineServers = new RegisteredServer[serverStatus.size()];
+        byte i = 0;
         for (final Map.Entry<RegisteredServer, Boolean> entry : serverStatus.entrySet()) {
-            if (!entry.getValue()) {
-                continue;
+            if (entry.getValue()) {
+                onlineServers[i++] = entry.getKey();
             }
-            onlineServers.add(entry.getKey());
         }
         return onlineServers;
     }
