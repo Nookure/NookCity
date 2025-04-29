@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class ServerPingListener {
     private static final Random RANDOM = new Random();
     @SuppressWarnings("rawtypes")
-    private static final BiPredicate[] EVALUATIONS_ARRAY = new BiPredicate[] {
+    private static final BiPredicate[] EVALUATIONS = new BiPredicate[] {
             // A bit ugly, but we can avoid us a Map usage.
             (a, b) -> (Integer) a <= (Integer) b,
             (a, b) -> (Integer) a >= (Integer) b,
@@ -28,20 +28,21 @@ public class ServerPingListener {
             (a, b) -> (Integer) a > (Integer) b,
             (a, b) -> a == b
     };
-    private static final String[] SYMBOLS = new String[] {"<=", ">=", "<", ">", "="};
+    private static final String[] OPERATORS = new String[] {"<=", ">=", "<", ">", "="};
 
     @Inject private ConfigurationContainer<MotdConfig> motdConfig;
 
     @Subscribe
     public void onServerPing(ProxyPingEvent event) {
-        if (motdConfig.get().mode == MotdMode.STATIC) {
-            if (motdConfig.get().motds.isEmpty()) return;
+        final MotdConfig config = motdConfig.get();
+        if (config.mode == MotdMode.STATIC) {
+            if (config.motds.isEmpty()) return;
 
-            event.setPing(getServerPing(motdConfig.get().motds.get(0), event.getPing().asBuilder()));
+            event.setPing(getServerPing(config.motds.get(0), event.getPing().asBuilder()));
             return;
         }
 
-        MotdConfig.MotdPartial partial = getRandomMotd(event.getConnection(), new ArrayList<>(motdConfig.get().motds));
+        final MotdConfig.MotdPartial partial = getRandomMotd(event.getConnection(), new ArrayList<>(config.motds));
 
         if (partial == null) return;
 
@@ -69,8 +70,7 @@ public class ServerPingListener {
         if (partials.isEmpty()) {
             return null;
         }
-        MotdConfig.MotdPartial motdPartial = partials.get(RANDOM.nextInt(partials.size()));
-
+        final MotdConfig.MotdPartial motdPartial = partials.get(RANDOM.nextInt(partials.size()));
         if (canUseMotd(motdPartial, connection)) {
             return motdPartial;
         }
@@ -82,19 +82,22 @@ public class ServerPingListener {
     public boolean canUseMotd(
             @NotNull final MotdConfig.MotdPartial motdPartial,
             @NotNull final InboundConnection connection) {
+        if (motdPartial.condition == null || motdPartial.condition.isEmpty()) {
+            return true;
+        }
         final int protocolVersion = connection.getProtocolVersion().getProtocol();
-        if (protocolVersion == -1 || motdPartial.condition == null || motdPartial.condition.isEmpty()) {
+        if (protocolVersion == -1) {
             return true;
         }
         byte i = -1; // Index-value for both arrays.
         while (true) {
             i++;
-            final String symbol = SYMBOLS[i];
+            final String symbol = OPERATORS[i];
             if (!motdPartial.condition.startsWith(symbol)) {
                 continue;
             }
             // Easy, it'll make the comparison, substring will take each symbol's length (>= -> 2 or = -> 1).
-            return EVALUATIONS_ARRAY[i].test(protocolVersion, Integer.parseInt(motdPartial.condition.substring(
+            return EVALUATIONS[i].test(protocolVersion, Integer.parseInt(motdPartial.condition.substring(
                     symbol.length() + 1)));
         }
     }
