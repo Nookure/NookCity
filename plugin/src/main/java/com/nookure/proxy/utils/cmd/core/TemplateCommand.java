@@ -68,7 +68,7 @@ public class TemplateCommand implements SimpleCommand {
             return true;
         }
 
-        if (permission.isEmpty() || permission.isBlank()) {
+        if (permission.isBlank()) {
             return true;
         }
 
