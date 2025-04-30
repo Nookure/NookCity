@@ -38,7 +38,7 @@ public class ServerPingListener {
         if (config.mode == MotdMode.STATIC) {
             if (config.motds.isEmpty()) return;
 
-            event.setPing(getServerPing(config.motds.get(0), event.getPing().asBuilder()));
+            event.setPing(getServerPing(config.motds.getFirst(), event.getPing().asBuilder()));
             return;
         }
 
